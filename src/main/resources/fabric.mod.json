@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "skinshine",
+  "version": "${version}",
+
+  "name": "Skin Shine",
+  "description": "Hides all armor equipped by the player",
+  "authors": [
+    "SFort"
+  ],
+  "contact": {
+    "sources": "https://github.com/SFort/MC-skinshine"
+  },
+
+  "license": "MIT",
+
+  "environment": "*",
+  "mixins": [
+    "skinshine.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "*"
+  }
+}
