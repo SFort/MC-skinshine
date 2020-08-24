@@ -2,11 +2,8 @@ package sf.ssf.sfort;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import sun.jvm.hotspot.debugger.Address;
-import sun.jvm.hotspot.opto.Block;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -26,12 +23,12 @@ public class SkinShine implements ClientModInitializer {
         // If anyone is wondering why this code is very odd
         // for some reason i could not stop thinking of the instruction path length
         // spent way to much time on it, then threw it away
-        File confFolder =FabricLoader.getInstance().getConfigDirectory();
+        File confFolder = FabricLoader.getInstance().getConfigDirectory();
         File oldFile = new File(
                 confFolder,
                 "SkinShine-ShowArmor.int"
         );
-        File confFile = new File(
+        File confFile = oldFile.exists()? oldFile: new File(
                 confFolder,
                 "SkinShine.conf"
         );
@@ -49,11 +46,7 @@ public class SkinShine implements ClientModInitializer {
                 }else{
                     switch (i) {
                         case 0:
-                            try{
-                                showAt = new Scanner(oldFile).nextFloat();
-                            }catch (Exception e){try{
-                                showAt = Float.parseFloat(ls[0]);
-                            }catch (Exception ee){showAt=0.0F;}}
+                            try{ showAt =Float.parseFloat(ls[0]);}catch (NumberFormatException ignored){};
                             ls[0] = String.valueOf(showAt);
                             break;
                         case 2:
