@@ -37,6 +37,7 @@ public class SkinShine implements ClientModInitializer {
                     "^-Should your armor always be invis? [false] true | false"
             );
             String[] ls = la.toArray(new String[la.size()>defaultDesc.size()*2?la.size():defaultDesc.size()*2]);
+            Arrays.fill(ls,"");
             for (int i = 0; i<defaultDesc.size();++i)
                 ls[i*2+1]= defaultDesc.get(i);
 
