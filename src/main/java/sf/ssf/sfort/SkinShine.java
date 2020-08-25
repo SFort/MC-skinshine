@@ -50,7 +50,7 @@ public class SkinShine implements ClientModInitializer {
             ls[2] = String.valueOf(keepSelfHidden);
 
             if(ls.length>defaultDesc.size()*2){
-                for (int i = (defaultDesc.size()*2)+1; i<=ls.length;i+=2){
+                for (int i = (defaultDesc.size()*2)+1; i<ls.length;i+=2){
                     ls[i] = "!#Unknown value / config from the future";
                 }
             }
