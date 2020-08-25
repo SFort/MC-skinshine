@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SkinShine{
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, LivingEntity livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo info) {
-		if (livingEntity instanceof ClientPlayerEntity && sf.ssf.sfort.SkinShine.shouldSelfHide())
+		if (livingEntity instanceof ClientPlayerEntity && sf.ssf.sfort.SkinShine.keepSelfHidden)
 			info.cancel();
 		if (livingEntity instanceof PlayerEntity)
 			if (sf.ssf.sfort.SkinShine.shouldHide(livingEntity.getHealth()))
