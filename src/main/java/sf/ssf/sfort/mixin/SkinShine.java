@@ -5,7 +5,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,5 +24,10 @@ public class SkinShine{
 		if (livingEntity instanceof PlayerEntity)
 			if (sf.ssf.sfort.SkinShine.shouldHide(livingEntity.getHealth()))
 				info.cancel();
+	}
+	@Inject(method = "renderArmor", at = @At("HEAD"), cancellable = true)
+	public void renderArmor(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LivingEntity livingEntity, EquipmentSlot equipmentSlot, int i, BipedEntityModel<LivingEntity> bipedEntityModel, CallbackInfo info) {
+		if (livingEntity instanceof PlayerEntity && sf.ssf.sfort.SkinShine.listSlot.contains(equipmentSlot))
+			info.cancel();
 	}
 }
