@@ -14,20 +14,20 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import sf.ssf.sfort.Config;
+
 @Environment(EnvType.CLIENT)
 @Mixin(ArmorFeatureRenderer.class)
 public class SkinShine{
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, LivingEntity livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo info) {
-		if (livingEntity instanceof ClientPlayerEntity && sf.ssf.sfort.SkinShine.keepSelfHidden)
+		if (livingEntity instanceof PlayerEntity && Config.shouldHide(livingEntity.getHealth())
+				|| livingEntity instanceof ClientPlayerEntity && Config.keepSelfHidden)
 			info.cancel();
-		if (livingEntity instanceof PlayerEntity)
-			if (sf.ssf.sfort.SkinShine.shouldHide(livingEntity.getHealth()))
-				info.cancel();
 	}
 	@Inject(method = "renderArmor", at = @At("HEAD"), cancellable = true)
 	public void renderArmor(MatrixStack matrices, VertexConsumerProvider vertexConsumers, LivingEntity livingEntity, EquipmentSlot equipmentSlot, int i, BipedEntityModel<LivingEntity> bipedEntityModel, CallbackInfo info) {
-		if (livingEntity instanceof PlayerEntity && sf.ssf.sfort.SkinShine.listSlot.contains(equipmentSlot))
+		if (livingEntity instanceof PlayerEntity && Config.listSlot.contains(equipmentSlot))
 			info.cancel();
 	}
 }

@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "SkinShine"
+    "SkinShine",
+    "Cape"
   ],
   "injectors": {
     "defaultRequire": 1

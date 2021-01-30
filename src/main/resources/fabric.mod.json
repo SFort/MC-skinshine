@@ -20,7 +20,7 @@
   ],
   "entrypoints": {
     "client": [
-      "sf.ssf.sfort.SkinShine"
+      "sf.ssf.sfort.Config"
     ]
   },
   "depends": {

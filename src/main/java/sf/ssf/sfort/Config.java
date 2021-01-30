@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.list;
 
-public class SkinShine implements ClientModInitializer {
+public class Config implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger();
 
     private static float showAt = 0.0F;
