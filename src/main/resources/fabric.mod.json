@@ -18,11 +18,6 @@
   "mixins": [
     "skinshine.mixins.json"
   ],
-  "entrypoints": {
-    "client": [
-      "sf.ssf.sfort.Config"
-    ]
-  },
   "depends": {
     "fabricloader": "*",
     "minecraft": "*"

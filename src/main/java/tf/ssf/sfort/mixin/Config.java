@@ -1,32 +1,36 @@
-package sf.ssf.sfort;
+package tf.ssf.sfort.mixin;
 
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EquipmentSlot;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
+import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.list;
 
-public class Config implements ClientModInitializer {
+public class Config implements IMixinConfigPlugin {
     public static Logger LOGGER = LogManager.getLogger();
 
     private static float showAt = 0.0F;
     public static boolean keepSelfHidden = false;
+    public static boolean hideBlocks = false;
     public static List<EquipmentSlot> listSlot = EMPTY_LIST;
 
     public static boolean shouldHide(float health){
-        return health> showAt;
+        return health > showAt;
     }
+
     @Override
-    public void onInitializeClient() {
+    public void onLoad(String mixinPackage) {
         // Configs
         File confFolder = FabricLoader.getInstance().getConfigDirectory();
         File oldFile = new File(
@@ -43,8 +47,9 @@ public class Config implements ClientModInitializer {
             List<String> defaultDesc = Arrays.asList(
                     "^-Health value under which armor is visable [0.0] 0.0 - 20.0",
                     "^-Should all your armor always be invis? [false] true | false",
-                    "^-Specify slots that should always be invis? [ ] head;chest;legs;feet"
-            );
+                    "^-Specify slots that should always be invis? [ ] head;chest;legs;feet",
+                    "^-Apply to pumpkins/mob heads/..other head blocks? [false] true | false"
+                    );
             String[] init =new String[Math.max(la.size(), defaultDesc.size() * 2)|1];
             String[] ls = la.toArray(init);
             for (int i = 0; i<defaultDesc.size();++i)
@@ -63,6 +68,8 @@ public class Config implements ClientModInitializer {
                 }
                 listSlot= Arrays.asList(out);
             }catch (Exception e){ LOGGER.log(Level.WARN,"tf.ssf.sfort.skinshine #4 "+e); };
+            try{ hideBlocks = ls[6].contains("true");}catch (Exception e){ LOGGER.log(Level.WARN,"tf.ssf.sfort.skinshine #6 "+e); };
+            ls[6] = String.valueOf(hideBlocks);
             String out ="";
             for (EquipmentSlot s : listSlot)
                 out+=s.getName()+";";
@@ -74,4 +81,17 @@ public class Config implements ClientModInitializer {
             LOGGER.log(Level.ERROR,"tf.ssf.sfort.skinshine failed to load config file, using defaults\n"+e);
         }
     }
+
+    @Override
+    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        switch (mixinClassName){
+            case "tf.ssf.sfort.mixin.Head":{return hideBlocks;}
+            default:{return true;}
+        }
+    }
+    @Override public String getRefMapperConfig() { return null; }
+    @Override public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) { }
+    @Override public List<String> getMixins() { return null; }
+    @Override public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) { }
+    @Override public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) { }
 }
