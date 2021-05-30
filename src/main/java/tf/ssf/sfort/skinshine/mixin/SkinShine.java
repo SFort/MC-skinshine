@@ -1,4 +1,4 @@
-package tf.ssf.sfort.mixin;
+package tf.ssf.sfort.skinshine.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
