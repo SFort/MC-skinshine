@@ -22,6 +22,7 @@ public class Config implements IMixinConfigPlugin {
     public static Logger LOGGER = LogManager.getLogger();
 
     private static float showAt = 0.0F;
+    public static float alpha = 1.0F;
     public static boolean keepSelfHidden = false;
     public static boolean hideBlocks = false;
     public static List<EquipmentSlot> listSlot = EMPTY_LIST;
@@ -49,7 +50,8 @@ public class Config implements IMixinConfigPlugin {
                     "^-Health value under which armor is visable [0.0] 0.0 - 20.0",
                     "^-Should all your armor always be invis? [false] true | false",
                     "^-Specify slots that should always be invis? [ ] head;chest;legs;feet",
-                    "^-Apply to pumpkins/mob heads/..other head blocks? [false] true | false"
+                    "^-Apply to pumpkins/mob heads/..other head blocks? [false] true | false",
+                    "^-Armor Translucency [1.0] 0.0 - 1.0"
                     );
             String[] init =new String[Math.max(la.size(), defaultDesc.size() * 2)|1];
             String[] ls = la.toArray(init);
@@ -68,13 +70,15 @@ public class Config implements IMixinConfigPlugin {
                     out[i] =EquipmentSlot.byName(in[i]);
                 }
                 listSlot= Arrays.asList(out);
-            }catch (Exception e){ LOGGER.log(Level.WARN,mod+" #4 "+e); };
+            }catch (Exception e){ if (!e.toString().endsWith("Invalid slot ''")) LOGGER.log(Level.WARN,mod+" #4 "+e); };
             try{ hideBlocks = ls[6].contains("true");}catch (Exception e){ LOGGER.log(Level.WARN,mod+" #6 "+e); };
             ls[6] = String.valueOf(hideBlocks);
             String out ="";
             for (EquipmentSlot s : listSlot)
                 out+=s.getName()+";";
             ls[4] = String.join(";", out);
+            try{ alpha = Float.parseFloat(ls[8]);}catch (Exception e){ LOGGER.log(Level.WARN,mod+" #8 "+e); };
+            ls[8] = String.valueOf(alpha);
 
             Files.write(confFile.toPath(), Arrays.asList(ls));
             LOGGER.log(Level.INFO,mod+" successfully loaded config file");
@@ -87,6 +91,8 @@ public class Config implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         switch (mixinClassName){
             case mod+".mixin.Head":return hideBlocks;
+            case mod+".mixin.GetContext":
+            case mod+".mixin.Transparent": return alpha != 1.0F;
             default:return true;
         }
     }

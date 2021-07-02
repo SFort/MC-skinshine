@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ArmorFeatureRenderer.class)
+@Mixin(value = ArmorFeatureRenderer.class, priority = 1202)
 public class SkinShine{
 	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
 	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, LivingEntity livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo info) {

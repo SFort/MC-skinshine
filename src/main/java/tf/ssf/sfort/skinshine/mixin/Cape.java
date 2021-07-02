@@ -17,20 +17,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntityModel.class)
 public class Cape<T extends LivingEntity> {
 	@Shadow
-	private final ModelPart cape;
+	private final ModelPart cloak;
 
 	public Cape(ModelPart cape) {
-		this.cape = cape;
+		this.cloak = cape;
 	}
 
 	@Inject(method = "setAngles",at=@At("TAIL"))
 	public void setAngles(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo info) {
 		if (livingEntity instanceof PlayerEntity && Config.shouldHide(livingEntity.getHealth()) || livingEntity instanceof ClientPlayerEntity && Config.keepSelfHidden)
 			if (livingEntity.isInSneakingPose()) {
-				this.cape.pivotZ = 1.4F;
-				this.cape.pivotY = 1.85F;
+				this.cloak.pivotZ = 1.4F;
+				this.cloak.pivotY = 1.85F;
 			} else {
-				this.cape.pivotZ = 0.0F;
-				this.cape.pivotY = 0.0F;
+				this.cloak.pivotZ = 0.0F;
+				this.cloak.pivotY = 0.0F;
 			} }
 }

@@ -4,12 +4,12 @@
   "package": "tf.ssf.sfort.skinshine.mixin",
   "compatibilityLevel": "JAVA_16",
   "plugin": "tf.ssf.sfort.skinshine.mixin.Config",
-  "mixins": [
-  ],
   "client": [
-    "SkinShine",
+    "GetContext",
+    "Transparent",
     "Cape",
-    "Head"
+    "Head",
+    "SkinShine"
   ],
   "injectors": {
     "defaultRequire": 1
